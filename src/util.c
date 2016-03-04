@@ -55,6 +55,7 @@ void * otrl_random_bytes(size_t nbytes, const int secure)
          : gcry_random_bytes(nbytes, GCRY_STRONG_RANDOM);
 
      hash_output = malloc(32); /* Allocate 32 bytes for the SHA2-256 output. */
+     memset(hash_output, 0, 32);
      gcry_md_hash_buffer(GCRY_MD_SHA256, hash_output, rng_output, nbytes);
 
      if (nbytes < 32) {        /* Truncate the SHA2-256 output to nbytes. */
@@ -72,7 +73,7 @@ void * otrl_random_bytes(size_t nbytes, const int secure)
  * retrieved from the RNG is hashed with SHA2-256 to protect against
  * accidental disclosure of the state of the RNG.
  *
- * This function can output at most 32-bytes, due to passing the RNG output
+ * This function can output at most 32 bytes, due to passing the RNG output
  * through SHA2-256 before returning.
  *
  * Returns: a gcry_error_t, with value GPG_ERR_INV_VALUE if the length is
@@ -89,6 +90,7 @@ gcry_error_t otrl_randomize(void *buffer, size_t length)
         return err;
 
     hash_output = malloc(32); /* Allocate 32 bytes for the SHA2-256 output. */
+    memset(hash_output, 0, 32);
 
     gcry_randomize(buffer, length, GCRY_STRONG_RANDOM);
     gcry_md_hash_buffer(GCRY_MD_SHA256, hash_output, buffer, length);

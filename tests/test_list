@@ -9,6 +9,7 @@ unit/test_mem
 unit/test_sm
 unit/test_instag
 unit/test_privkey
+unit/test_util
 regression/random-msg.sh
 regression/random-msg-auth.sh
 regression/random-msg-fast.sh
